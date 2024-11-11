@@ -1,19 +1,21 @@
-import { useEffect } from 'react';
-import { Text, View } from 'react-native';
-import styled from 'styled-components/native';
+import { NavigationContainer } from '@react-navigation/native';
+import { StatusBar, Text, View } from 'react-native';
 
-const Container = styled.View`
-  flex: 1;
-  width: 100%;
-  justify-content: center;
-  align-items: center;
-`;
+import Routes from './src/routes';
 
 export default function App() {
-
-  return (
-    <Container>
-      <Text>App</Text>
-    </Container>
-  );
-};
+	return (
+		<NavigationContainer>
+      <StatusBar
+        backgroundColor='#36393f'
+        barStyle='light-content'
+        translucent={false}
+        />
+      <View style={{
+        height: 5,
+        backgroundColor:'#36393f'
+      }} /> 
+			<Routes />
+		</NavigationContainer>
+	);
+}
