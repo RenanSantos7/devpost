@@ -20,7 +20,7 @@ export const OnlyTxtBtn = styled.TouchableOpacity`
 `;
 
 export const OnlyTxtBtnTxt = styled.Text`
-    color: #eee;
+    color: #ddd;
     font-weight: bold;
     font-style: italic;
     text-align: center;

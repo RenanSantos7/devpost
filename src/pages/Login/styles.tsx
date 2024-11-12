@@ -4,19 +4,17 @@ import Page from '../../components/layout/Page';
 export const Container = styled(Page)`
 	justify-content: center;
 	align-items: center;
-  background-color: #353840;
-  gap: 18px;
-  padding-inline: 40px;
+	background-color: #353840;
+	padding-inline: 40px;
 `;
 
-export const Title = styled.Text`
-	font-weight: 900;
-	font-size: 48px;
-	font-style: italic;
-  color: white;
-  margin-bottom: 24px;
+export const Wrapper = styled.View`
+	gap: 18px;
+	width: 100%;
 `;
 
-export const TitleRed = styled.Text`
-	color: #e52246;
+export const Logo = styled.Image`
+	height: 48px;
+	object-fit: contain;
+	margin-bottom: 20px;
 `;

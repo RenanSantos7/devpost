@@ -5,10 +5,13 @@ import { Container, StyledInput } from './styles';
 
 interface InputProps extends TextInputProps {
 	icon?: string;
-	password?: boolean;
+	secret?: boolean;
 }
 
-export default function Input({password = false, ...props}: InputProps) {
+export default function Input({
+	secret = false,
+	...props
+}: InputProps) {
 	return (
 		<Container>
 			{/*  
@@ -24,7 +27,9 @@ export default function Input({password = false, ...props}: InputProps) {
 				placeholderTextColor='#A09D9D'
 				underlineColorAndroid='transparent'
 				cursorColor='#e52246'
-				secureTextEntry={password}
+				secureTextEntry={secret}
+				autoCapitalize={props.autoCapitalize || 'none'}
+				{...props}
 			/>
 		</Container>
 	);
