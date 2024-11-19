@@ -3,6 +3,8 @@ import { StatusBar, View } from 'react-native';
 
 import AuthProvider from './src/contexts/authContext';
 import Routes from './src/routes';
+import Loading from './src/components/layout/Loading';
+import DataProvider from './src/contexts/dataContext';
 
 export default function App() {
 	return (
@@ -12,15 +14,12 @@ export default function App() {
 				barStyle='light-content'
 				translucent={false}
 			/>
-			<View
-				style={{
-					height: 5,
-					backgroundColor: '#36393f',
-				}}
-			/>
-      <AuthProvider>
-        <Routes />
-      </AuthProvider>
+			<AuthProvider>
+				<DataProvider>
+					<Loading />
+					<Routes />
+				</DataProvider>
+			</AuthProvider>
 		</NavigationContainer>
 	);
 }
