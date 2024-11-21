@@ -14,6 +14,14 @@ export const PrimaryBtnTxt = styled.Text`
     font-size: 18px;
 `;
 
+export const SecondaryBtn = styled(PrimaryBtn)`
+  	background-color: #E7E7E7;
+`;
+
+export const SecondaryBtnTxt = styled(PrimaryBtnTxt)`
+  	color: #303030;
+`;
+
 export const OnlyTxtBtn = styled.TouchableOpacity`
 	width: 100%;
 	padding: 12px;

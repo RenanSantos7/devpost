@@ -1,21 +1,45 @@
-import { Container, Logo, Wrapper } from './styles';
+import { Container, ErrorMsg, Logo, Wrapper } from './styles';
 import Button from '../../components/Button';
 import Input from '../../components/Input';
 import { useAuthContext } from '../../contexts/authContext';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function Login() {
 	const [login, setLogin] = useState(true);
 	const [name, setName] = useState('');
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
-	const { signIn, signUp } = useAuthContext();
+	const [errorMsg, setErrorMsg] = useState('');
+	
+	const { error, signIn, signUp } = useAuthContext();
 
 	function clear() {
 		setName('');
 		setEmail('');
 		setPassword('');
 	}
+
+	useEffect(() => {
+		if (!error) {
+			setErrorMsg('');
+		}
+
+		if (error?.message.includes('auth/invalid-email')) {
+			setErrorMsg(
+				'Email inválido. Verifique se digitou ele corretamente'
+			);
+		}
+
+		if (error?.message.includes('auth/invalid-credential')) {
+			setErrorMsg(
+				'Senha incorreta. Verifique se digitou ela corretamente'
+			);
+		}
+
+		return () => {
+			setErrorMsg('');
+		};
+	}, [error]);
 
 	return (
 		<Container>
@@ -25,6 +49,7 @@ export default function Login() {
 				<Wrapper>
 					<Input
 						placeholder='email@email.com'
+						keyboardType='email-address'
 						value={email}
 						onChangeText={text => setEmail(text)}
 					/>
@@ -38,13 +63,13 @@ export default function Login() {
 
 					<Button
 						text='Acessar'
-						onPress={() => {
+						onPress={async () => {
 							if (!email) console.error('Verique o email');
 
 							if (!password) console.error('Verifique a senha');
 
 							if (email && password) {
-								signIn(email, password);
+								await signIn(email, password);
 								clear();
 							}
 						}}
@@ -66,6 +91,7 @@ export default function Login() {
 
 					<Input
 						placeholder='email@email.com'
+						keyboardType='email-address'
 						value={email}
 						onChangeText={text => setEmail(text)}
 					/>
@@ -100,6 +126,8 @@ export default function Login() {
 					/>
 				</Wrapper>
 			)}
+
+			{errorMsg && <ErrorMsg>{errorMsg}</ErrorMsg>}
 		</Container>
 	);
 }

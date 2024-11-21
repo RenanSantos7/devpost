@@ -8,17 +8,17 @@ import {
 } from 'react';
 
 interface IDataContext {
-	loading: boolean;
-	setLoading: Dispatch<SetStateAction<boolean>>;
+	data: boolean;
+	setData: Dispatch<SetStateAction<boolean>>;
 }
 
 const DataContext = createContext<IDataContext>(undefined);
 
 export default function DataProvider({ children }: { children: ReactNode }) {
-	const [loading, setLoading] = useState(false);
+	const [data, setData] = useState(false);
 
 	return (
-		<DataContext.Provider value={{ loading, setLoading }}>
+		<DataContext.Provider value={{ data, setData }}>
 			{children}
 		</DataContext.Provider>
 	);
