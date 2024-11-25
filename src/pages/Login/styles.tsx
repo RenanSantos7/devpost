@@ -13,11 +13,6 @@ export const Wrapper = styled.View`
 	width: 100%;
 `;
 
-export const Logo = styled.Image`
-	height: 48px;
-	object-fit: contain;
-	margin-bottom: 20px;
-`;
 
 export const ErrorMsg = styled.Text`
 	color: hsl(0, 85%, 75%);

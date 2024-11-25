@@ -1,8 +1,9 @@
-import { Container, ErrorMsg, Logo, Wrapper } from './styles';
+import { Container, ErrorMsg, Wrapper } from './styles';
 import Button from '../../components/Button';
 import Input from '../../components/Input';
 import { useAuthContext } from '../../contexts/authContext';
 import { useEffect, useState } from 'react';
+import Logo from '../../components/Logo';
 
 export default function Login() {
 	const [login, setLogin] = useState(true);
@@ -43,7 +44,7 @@ export default function Login() {
 
 	return (
 		<Container>
-			<Logo source={require('../../assets/devpost_logo.png')} />
+			<Logo size={48} />
 
 			{login ? (
 				<Wrapper>
