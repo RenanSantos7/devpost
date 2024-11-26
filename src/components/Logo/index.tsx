@@ -16,7 +16,7 @@ const StyledImage = styled.Image<StyledImageProps>`
 export default function Logo(props: LogoProps) {
     return (
         <StyledImage
-            source={require('../../assets/devpost_logo.png')}
+            source={require('../../assets/logo.png')}
             $size={`${props.size}px`}
         />
     );

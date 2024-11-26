@@ -4,7 +4,7 @@ import Page from '../../components/layout/Page';
 export const Container = styled(Page)`
 	justify-content: center;
 	align-items: center;
-	background-color: #353840;
+	background-color: ${({ theme }) => theme.colors.background.main};
 	padding-inline: 40px;
 `;
 
@@ -13,8 +13,7 @@ export const Wrapper = styled.View`
 	width: 100%;
 `;
 
-
 export const ErrorMsg = styled.Text`
-	color: hsl(0, 85%, 75%);
+	color: ${({ theme }) => theme.colors.error};
 	font-style: italic;
 `;

@@ -4,6 +4,7 @@ import Input from '../../components/Input';
 import { useAuthContext } from '../../contexts/authContext';
 import { useEffect, useState } from 'react';
 import Logo from '../../components/Logo';
+import { View } from 'react-native';
 
 export default function Login() {
 	const [login, setLogin] = useState(true);
@@ -44,7 +45,9 @@ export default function Login() {
 
 	return (
 		<Container>
-			<Logo size={48} />
+			<View style={{marginBottom: 28}}>
+				<Logo size={64} />
+			</View>
 
 			{login ? (
 				<Wrapper>

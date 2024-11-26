@@ -9,7 +9,7 @@ export default function Home() {
 	return (
 		<Page>
 			<Header>
-				<Logo size={24} />
+				<Logo size={32} />
 			</Header>
 
 			<Container
