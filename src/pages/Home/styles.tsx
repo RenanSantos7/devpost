@@ -13,7 +13,7 @@ export const Container = styled.FlatList`
 `;
 
 export const Separator = styled.View`
-	height: ${({ theme }) => theme.size.text.main};
+	height: ${({ theme }) => theme.size.text.main}px;
 `;
 
 export const Post = styled.View`
