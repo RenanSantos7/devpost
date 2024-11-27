@@ -14,14 +14,15 @@ export default function NewPost() {
 	const [post, setPost] = useState('');
 
 	const { theme } = useThemeContext();
-	const { user } = useAuthContext();
+	const { user, setLoading } = useAuthContext();
 
-	const navigation = useNavigation<NavigationProp<HomeStackParams>>();
+	const navigation = useNavigation();
 
 	const rest: number = useMemo(() => 300 - post.length, [post]);
 	const danger: boolean = useMemo(() => rest <= 20, [rest]);
 
 	async function handlePost() {
+		setLoading(true)
 		let avatar = null;
 		try {
 			let response = await storage()
@@ -45,9 +46,11 @@ export default function NewPost() {
 			})
 			.then(() => {
 				setPost('');
+				console.log('post feito');
 				navigation.goBack();
 			})
-			.catch(err => console.error(err));
+			.catch(err => console.error(err))
+			.finally(() => setLoading(false));
 	}
 
 	return (

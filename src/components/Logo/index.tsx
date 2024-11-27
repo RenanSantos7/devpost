@@ -5,11 +5,11 @@ interface LogoProps {
 };
 
 interface StyledImageProps {
-    $size: string;
+    $size: number;
 }
 
 const StyledImage = styled.Image<StyledImageProps>`
-	height: ${props => props.$size};
+	height: ${props => props.$size}px;
 	object-fit: contain;
 `;
 
@@ -17,7 +17,7 @@ export default function Logo(props: LogoProps) {
     return (
         <StyledImage
             source={require('../../assets/logo.png')}
-            $size={`${props.size}px`}
+            $size={props.size}
         />
     );
 };

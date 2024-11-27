@@ -1,8 +1,11 @@
 import { ActivityIndicator, View } from 'react-native';
 import { useAuthContext } from '../../contexts/authContext';
+import { useThemeContext } from '../../contexts/themeContext';
 
 export default function Loading() {
 	const { loading } = useAuthContext();
+
+	const { theme } = useThemeContext();
 
 	if (loading) {
 		return (
@@ -19,7 +22,10 @@ export default function Loading() {
 					backgroundColor: '#000000cc',
 				}}
 			>
-				<ActivityIndicator color='#e52246' size={64} />
+				<ActivityIndicator
+					color={theme.colors.primary.main}
+					size={64}
+				/>
 			</View>
 		);
 	}

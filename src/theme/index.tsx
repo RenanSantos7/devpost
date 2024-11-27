@@ -6,9 +6,11 @@ const theme: ITheme = {
 			large: 24,
 			main: 16,
 			small: 14,
+			smaller: 12,
 		},
 		spacing: {
 			main: 20,
+			small: 16,
 		},
 	},
 	colors: {
@@ -21,7 +23,8 @@ const theme: ITheme = {
 		},
 		background: {
 			main: '#353840',
-			light: 'white',
+			light: '#eee',
+			lighter: 'white',
 		},
 		error: '#fc506f',
 		text: {

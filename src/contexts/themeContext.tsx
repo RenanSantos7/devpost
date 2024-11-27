@@ -1,7 +1,7 @@
 import { createContext, ReactNode, useContext, useState } from 'react';
 
 import { ITheme } from '../types/index.ts';
-import theme from '../styles/index.tsx';
+import theme from '../theme/index.tsx';
 import { ThemeProvider } from 'styled-components/native';
 
 interface IThemeContext {

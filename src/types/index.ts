@@ -7,24 +7,35 @@ export interface IUser {
 	createdAt?: Date;
 }
 
+export interface IPost {
+	uid: string;
+	author: string;
+	avatarUrl: string;
+	content: string;
+	created: Date;
+	likes: number;
+	userId: string;
+}
+
 interface IColor {
 	main: ColorValue;
 	dark?: ColorValue;
 	light?: ColorValue;
+	lighter?: ColorValue;
 }
 
 interface ISize {
-	xlarge?: number;
+	larger?: number;
 	large?: number;
 	main: number;
 	small?: number;
-	xsmall?: number;
+	smaller?: number;
 }
 
 export interface ITheme {
 	size: {
-        text: ISize;
-        spacing: ISize;
+		text: ISize;
+		spacing: ISize;
 	};
 	colors: {
 		primary: IColor;
@@ -33,8 +44,8 @@ export interface ITheme {
 		error: ColorValue;
 		text: {
 			main: ColorValue;
-            title: ColorValue;
-            placeholder: ColorValue;
+			title: ColorValue;
+			placeholder: ColorValue;
 		};
 	};
 }
