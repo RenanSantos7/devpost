@@ -1,4 +1,3 @@
-import { differenceInMinutes, differenceInSeconds, format } from 'date-fns';
 import { useMemo } from 'react';
 import MaterialComIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -11,9 +10,10 @@ import {
 	Time,
 	UserPhoto,
 } from './styles';
-import { IPost } from '../../../../types';
 import { FlexLine } from '../../../../components/layout';
+import { IPost } from '../../../../types/index.ts';
 import { useThemeContext } from '../../../../contexts/themeContext';
+import relativeDate from '../../../../utils/relativeDate.ts';
 
 interface PostProps {
 	post: IPost;
@@ -29,26 +29,7 @@ export default function Post({ post }: PostProps) {
 
 	const time = useMemo(() => {
 		const { created } = post;
-
-		if (!created) return ''
-
-		const now = new Date();
-		const minutesDiff = differenceInMinutes(now, created);
-		const secondsDiff = differenceInSeconds(now, created);
-
-		if (secondsDiff < 30) {
-			return 'agora mesmo';
-		} else if (minutesDiff < 1) {
-			return 'há poucos segundos';
-		} else if (minutesDiff < 60) {
-			return `há ${minutesDiff} minutos`;
-		} else if (minutesDiff < 1440) {
-			// 1440 minutos = 24 horas
-			return `há ${Math.floor(minutesDiff / 60)} horas`;
-		} else {
-			// ... outros casos, como dias, meses, anos
-			return format(created, 'dd/MM/yyyy');
-		}
+		return relativeDate(created);
 	}, [post]);
 
 	const { theme } = useThemeContext();

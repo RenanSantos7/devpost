@@ -25,6 +25,7 @@ export const Content = styled.Text`
 	margin-bottom: 16px;
 	font-size: ${({ theme }) => theme.size.text.main}px;
 	line-height: ${({ theme }) => theme.size.text.main * 1.35}px;
+	color: ${({ theme }) => theme.colors.text.main};
 `;
 
 export const Likes = styled.Pressable`
@@ -38,4 +39,5 @@ export const LikesNum = styled.Text`
 
 export const Time = styled.Text`
 	font-size: ${({ theme }) => theme.size.text.small}px;
+	color: ${({theme}) => theme.colors.text.placeholder};
 `;

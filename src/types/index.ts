@@ -10,11 +10,11 @@ export interface IUser {
 export interface IPost {
 	uid: string;
 	author: string;
-	avatarUrl: string;
+	avatarUrl: string | null;
 	content: string;
 	created: Date;
 	likes: number;
-	userId: string;
+	userId: string | null;
 }
 
 interface IColor {
@@ -46,6 +46,7 @@ export interface ITheme {
 			main: ColorValue;
 			title: ColorValue;
 			placeholder: ColorValue;
+			light: ColorValue;
 		};
 	};
 }

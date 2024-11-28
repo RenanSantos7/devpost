@@ -1,59 +1,55 @@
-import { PostList, Separator } from './styles';
+import { ActivityIndicator, View } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
+import { useCallback, useEffect, useState } from 'react';
+import firestore from '@react-native-firebase/firestore';
+
 import { Header, Page } from '../../components/layout';
+import { Empty, Footer, PostList, Separator } from './styles';
+import { useAuthContext } from '../../contexts/authContext';
 import FloatingBtn from '../../components/FloatingBtn';
-import { useState } from 'react';
 import Post from './components/Post';
-import { IPost } from '../../types';
-import { View } from 'react-native';
+
+import { mockPosts } from './mock';
+import { useThemeContext } from '../../contexts/themeContext';
 
 export default function Home() {
-	const [posts, setPosts] = useState<IPost[]>([
-		{
-			uid: '12123',
-			content: 'Olá Mundo!',
-			author: 'Renan',
-			avatarUrl: null,
-			likes: 0,
-			userId: '',
-			created: new Date(2024, 10, 27, 11, 20),
-		},
-		{
-			uid: '54545',
-			content: 'date-fns é uma biblioteca JavaScript excelente para manipular datas e horários de forma precisa e concisa. Para criar strings como "há 10 minutos", "há poucos segundos", ela oferece funções que permitem calcular a diferença entre duas datas e formatar o resultado de maneira intuitiva.',
-			author: 'Renan',
-			avatarUrl: null,
-			likes: 0,
-			userId: '',
-			created: new Date(2024, 10, 27, 12, 25),
-		},
-		{
-			uid: 'gadgad',
-			content: 'Se você ainda não tiver o date-fns instalado em seu projeto, use um gerenciador de pacotes como npm ou yarn:',
-			author: 'Renan',
-			avatarUrl: null,
-			likes: 0,
-			userId: '',
-			created: new Date(2024, 10, 27, 11, 22),
-		},
-		{
-			uid: '6789',
-			content: 'Olá Mundo!',
-			author: 'Ana Luiza',
-			avatarUrl: null,
-			likes: 0,
-			userId: '',
-			created: new Date(2024, 10, 27, 11, 23),
-		},
-		{
-			uid: '678fa9',
-			content: 'Importe as funções differenceInMinutes, differenceInSeconds, format e outras que você precisar:',
-			author: 'João das Neves',
-			avatarUrl: null,
-			likes: 0,
-			userId: '',
-			created: new Date(2024, 10, 27, 11, 23),
-		},
-	]);
+	const { user } = useAuthContext();
+
+	const [posts, setPosts] = useState([]);
+
+	const { theme } = useThemeContext();
+
+	useFocusEffect(
+		useCallback(() => {
+			let isActive = true;
+
+			firestore()
+				.collection('posts')
+				.orderBy('created', 'desc')
+				.limit(5)
+				.get()
+				.then(snapshot => {
+					if (isActive) {
+						setPosts([]);
+						const postList: any[] = [];
+						snapshot.docs.map(d => {
+							const data = d.data();
+
+							postList.push({
+								...data,
+								created: new Date(data.created.seconds * 1000),
+								uid: d.id,
+							});
+						});
+						setPosts(postList);
+					}
+				});
+
+			return () => {
+				isActive = false;
+			};
+		}, [])
+	);
 
 	return (
 		<Page>
@@ -66,8 +62,14 @@ export default function Home() {
 				//@ts-ignore
 				keyExtractor={item => item.uid}
 				ItemSeparatorComponent={() => <Separator />}
-				ListFooterComponent={() => <View style={{ height: 100 }} />}
+				ListFooterComponent={<Footer />}
+				ListEmptyComponent={() => (
+					<Empty>
+						<ActivityIndicator color={theme.colors.primary.main} size={48} />
+					</Empty>
+				)}
 			/>
+
 			<FloatingBtn />
 		</Page>
 	);
