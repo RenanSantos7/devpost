@@ -24,6 +24,7 @@ interface IAuthContext {
 	signOut: () => void;
 	loading: boolean;
 	setLoading: Dispatch<SetStateAction<boolean>>;
+	like: (postId: string) => void;
 }
 
 const AuthContext = createContext<IAuthContext>(undefined);
@@ -46,12 +47,14 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
 						name,
 						email,
 						createdAt: new Date(),
+						likes: []
 					})
 					.then(() => {
 						setUser({
 							uid,
 							name,
 							email,
+							likes: []
 						});
 					});
 			})
@@ -77,6 +80,7 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
 					uid: id,
 					name: userProfile.data().name,
 					email: userProfile.data().email,
+					likes: userProfile.data().likes,
 				});
 				setError(null);
 			})
@@ -116,10 +120,27 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
 		setLoading(false);
 	}
 
+	function like(postId: string) {
+		const isLiked = user.likes.includes(postId);
+		const { likes } = user;
+
+		if (isLiked) {
+			setUser(prev => ({
+				...prev,
+				likes: likes.filter(lk => lk !== postId)
+			}))
+		} else {
+			setUser(prev => ({
+				...prev,
+				likes: [...likes, postId]
+			}))
+		}
+	}
+
 	useEffect(() => {
 		loadUserFromAsyncStorage();
 	}, []);
-
+	
 	useEffect(() => {
 		saveUserOnAsyncStorage(user);
 	}, [user]);
@@ -135,6 +156,7 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
 				signOut,
 				loading,
 				setLoading,
+				like
 			}}
 		>
 			{children}

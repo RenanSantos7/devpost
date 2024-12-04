@@ -24,10 +24,10 @@ export const User = styled.View`
 export const UserName = styled.Text`
 	font-weight: bold;
 	color: ${({ theme }) => theme.colors.text.title};
-	font-size: ${({ theme }) => theme.size.text.large};
+	font-size: ${({ theme }) => theme.size.text.large}px;
 `;
 
 export const UserEmail = styled.Text`
-	font-size: ${({ theme }) => theme.size.text.main};
+	font-size: ${({ theme }) => theme.size.text.main}px;
 	color: ${({ theme }) => theme.colors.text.main};
 `;

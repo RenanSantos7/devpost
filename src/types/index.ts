@@ -5,6 +5,7 @@ export interface IUser {
 	name: string;
 	email: string;
 	createdAt?: Date;
+	likes?: string[]
 }
 
 export interface IPost {
@@ -47,6 +48,7 @@ export interface ITheme {
 			title: ColorValue;
 			placeholder: ColorValue;
 			light: ColorValue;
+			lighter: ColorValue;
 		};
 	};
 }

@@ -28,8 +28,9 @@ const theme: ITheme = {
 		},
 		error: '#fc506f',
 		text: {
-			main: '#777',
-			light: '#eee',
+			main: '#303030',
+			light: '#aaa',
+			lighter: '#eee',
 			title: '#fff',
 			placeholder: '#ccc',
 		},

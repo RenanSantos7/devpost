@@ -46,7 +46,7 @@ export default function NewPost() {
 			})
 			.then(() => {
 				setPost('');
-				console.log('post feito');
+				// console.log('post feito');
 				navigation.goBack();
 			})
 			.catch(err => console.error(err))

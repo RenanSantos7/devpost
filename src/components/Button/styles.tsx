@@ -13,8 +13,8 @@ export const PrimaryBtn = styled.TouchableOpacity<ButtonProps>`
 `;
 
 export const PrimaryBtnTxt = styled.Text<ButtonProps>`
-	color: ${({ theme }) => theme.colors.text.main};
-	opacity: ${({$disabled}) => $disabled ? '0.75' : '1'};
+	color: ${({ theme }) => theme.colors.text.lighter};
+	opacity: ${({ $disabled }) => ($disabled ? '0.75' : '1')};
 	font-weight: bold;
 	text-align: center;
 	font-size: ${({ theme }) => theme.size.text.main}px;

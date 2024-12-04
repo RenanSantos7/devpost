@@ -2,17 +2,26 @@ import styled from 'styled-components/native';
 
 export const Container = styled.View`
 	background-color: ${({ theme }) => theme.colors.background.lighter};
-	box-shadow: 1px 1px rgba(0, 0, 0, 0.2);
+	box-shadow: 1px 1px 1px rgba(200, 0, 0, 0.2);
 	border-radius: 8px;
 	padding: ${({ theme }) => theme.size.spacing.small}px;
 	border: 1px solid #ddd;
+`;
+
+export const Header = styled.Pressable`
+	width: 100%;
+	flex-direction: row;
+	justify-content: flex-start;
+	align-items: center;
+	gap: 12px;
 `;
 
 export const UserPhoto = styled.Image`
 	width: 32px;
 	height: 32px;
 	border-radius: 32px;
-	border: 1px solid ${({ theme }) => theme.colors.background.main};
+	object-fit: cover;
+	border: 1px solid ${({ theme }) => theme.colors.text.light};
 `;
 
 export const Author = styled.Text`
@@ -35,9 +44,10 @@ export const Likes = styled.Pressable`
 
 export const LikesNum = styled.Text`
 	color: ${({ theme }) => theme.colors.primary.main};
+	font-size: ${({ theme }) => theme.size.text.main}px;
 `;
 
 export const Time = styled.Text`
 	font-size: ${({ theme }) => theme.size.text.small}px;
-	color: ${({theme}) => theme.colors.text.placeholder};
+	color: ${({ theme }) => theme.colors.text.light};
 `;
