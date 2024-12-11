@@ -1,21 +1,22 @@
-import { ActivityIndicator, View } from 'react-native';
+import { ActivityIndicator } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
-import { useCallback, useEffect, useState } from 'react';
-import firestore from '@react-native-firebase/firestore';
+import { useCallback, useState } from 'react';
 
 import { Header, Page } from '../../components/layout';
 import { Empty, Footer, PostList, Separator } from './styles';
+import { fetchPosts, handleRefreshPosts } from './controllers';
 import { useAuthContext } from '../../contexts/authContext';
 import { useThemeContext } from '../../contexts/themeContext';
 import FloatingBtn from '../../components/FloatingBtn';
 import Post from './components/Post';
 
-import { mockPosts } from './mock';
-
 export default function Home() {
 	const { user, like } = useAuthContext();
 
 	const [posts, setPosts] = useState([]);
+	const [loadingRefresh, setLoadingRefresh] = useState(false);
+	const [lastItem, setLastItem] = useState('');
+	const [emptyList, setEmptyList] = useState(false);
 
 	const { theme } = useThemeContext();
 
@@ -23,27 +24,7 @@ export default function Home() {
 		useCallback(() => {
 			let isActive = true;
 
-			firestore()
-				.collection('posts')
-				.orderBy('created', 'asc')
-				.limit(10)
-				.get()
-				.then(snapshot => {
-					if (isActive) {
-						setPosts([]);
-						const postList: any[] = [];
-						snapshot.docs.map(d => {
-							const data = d.data();
-
-							postList.push({
-								...data,
-								created: new Date(data.created.seconds * 1000),
-								uid: d.id,
-							});
-						});
-						setPosts(postList);
-					}
-				});
+			fetchPosts(isActive, setPosts, setEmptyList, setLastItem);
 
 			return () => {
 				isActive = false;
@@ -99,6 +80,15 @@ export default function Home() {
 						/>
 					</Empty>
 				)}
+				refreshing={loadingRefresh}
+				onRefresh={async () => {
+					handleRefreshPosts(
+						setPosts,
+						setEmptyList,
+						setLastItem,
+						setLoadingRefresh
+					);
+				}}
 			/>
 
 			<FloatingBtn />
