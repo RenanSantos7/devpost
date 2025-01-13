@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import MaterialComIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import {
@@ -15,7 +15,6 @@ import { FlexLine } from '../../../../components/layout';
 import { IPost } from '../../../../types/index.ts';
 import { useThemeContext } from '../../../../contexts/themeContext';
 import relativeDate from '../../../../utils/relativeDate.ts';
-import { is } from 'date-fns/locale';
 
 interface PostProps {
 	post: IPost;
@@ -45,11 +44,6 @@ export default function Post({ post, userLikes, onLike }: PostProps) {
 		[userLikes]
 	);
 
-	useEffect(() => {
-		if (post.uid === 'GJPc1mT0sjIV9oM6EKPR')
-			console.log(`isLiked: ${isLiked}`);
-	}, [isLiked]);
-
 	function handleLike() {
 		onLike(post.uid);
 		if (isLiked) {
@@ -71,12 +65,14 @@ export default function Post({ post, userLikes, onLike }: PostProps) {
 			<FlexLine justifyContent='space-between'>
 				<Likes onPress={handleLike}>
 					{isLiked ? (
+						// @ts-ignore
 						<MaterialComIcons
 							name='heart'
 							size={theme.size.text.main}
 							color={theme.colors.primary.main}
 						/>
 					) : (
+						// @ts-ignore
 						<MaterialComIcons
 							name='heart-plus-outline'
 							size={theme.size.text.main}

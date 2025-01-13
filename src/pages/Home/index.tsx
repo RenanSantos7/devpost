@@ -15,27 +15,15 @@ export default function Home() {
 
 	const [posts, setPosts] = useState([]);
 	const [loadingRefresh, setLoadingRefresh] = useState(false);
-	const [lastItem, setLastItem] = useState('');
+	const [lastItem, setLastItem] = useState<any>(undefined);
 	const [emptyList, setEmptyList] = useState(false);
 
 	const { theme } = useThemeContext();
 
-	useFocusEffect(
-		useCallback(() => {
-			let isActive = true;
-
-			fetchPosts(isActive, setPosts, setEmptyList, setLastItem);
-
-			return () => {
-				isActive = false;
-			};
-		}, [])
-	);
-
 	function onLike(postId: string) {
 		like(postId);
 
-		if (user.likes.includes(postId)) {
+		if (user?.likes.includes(postId)) {
 			setPosts(
 				posts.map(post =>
 					post.id === postId
@@ -53,6 +41,18 @@ export default function Home() {
 			);
 		}
 	}
+
+	useFocusEffect(
+		useCallback(() => {
+			let isActive = true;
+
+			fetchPosts(isActive, setPosts, setEmptyList, setLastItem);
+
+			return () => {
+				isActive = false;
+			};
+		}, [])
+	);
 
 	return (
 		<Page>

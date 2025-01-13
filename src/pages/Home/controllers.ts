@@ -1,11 +1,18 @@
 import firestore from '@react-native-firebase/firestore';
 import { Dispatch, SetStateAction } from 'react';
 
+/**
+ * Busca os posts no Firestore e atualiza o estado dos posts, da lista vazia e do último item.
+ * @param isActive 
+ * @param setPosts 
+ * @param setEmptyList 
+ * @param setLastItem 
+ */
 export function fetchPosts(
 	isActive: boolean,
 	setPosts: Dispatch<SetStateAction<any[]>>,
 	setEmptyList: Dispatch<SetStateAction<boolean>>,
-	setLastItem: Dispatch<SetStateAction<string>>
+	setLastItem: Dispatch<SetStateAction<any>>
 ) {
 	firestore()
 		.collection('posts')
@@ -29,15 +36,22 @@ export function fetchPosts(
 				});
 				setEmptyList(snapshot.empty);
 				setPosts(postList);
-				setLastItem(docs[docs.length - 1].id);
+				setLastItem(docs[docs.length - 1]);
 			}
 		});
 }
 
+/**
+ * Atualiza a lista de posts.
+ * @param setPosts 
+ * @param setEmptyList 
+ * @param setLastItem 
+ * @param setLoading 
+ */
 export async function handleRefreshPosts(
 	setPosts: Dispatch<SetStateAction<any[]>>,
 	setEmptyList: Dispatch<SetStateAction<boolean>>,
-	setLastItem: Dispatch<SetStateAction<string>>,
+	setLastItem: Dispatch<SetStateAction<any>>,
 	setLoadingRefresh: Dispatch<SetStateAction<boolean>>,
 ) {
 	firestore()
@@ -62,7 +76,7 @@ export async function handleRefreshPosts(
 
 			setEmptyList(false);
 			setPosts(postList);
-			setLastItem(docs[docs.length - 1].id);
+			setLastItem(docs[docs.length - 1]);
 		});
 
 	setLoadingRefresh(false);
