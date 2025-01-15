@@ -14,7 +14,7 @@ export default function NewPost() {
 	const [post, setPost] = useState('');
 
 	const { theme } = useThemeContext();
-	const { user, setLoading } = useAuthContext();
+	const { loggedUser: user, setLoading } = useAuthContext();
 
 	const navigation = useNavigation();
 

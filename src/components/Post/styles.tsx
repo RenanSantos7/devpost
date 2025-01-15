@@ -16,22 +16,14 @@ export const Header = styled.Pressable`
 	gap: 12px;
 `;
 
-export const UserPhoto = styled.Image`
-	width: 32px;
-	height: 32px;
-	border-radius: 32px;
-	object-fit: cover;
-	border: 1px solid ${({ theme }) => theme.colors.text.light};
-`;
-
 export const Author = styled.Text`
-	font-size: 20px;
+	font-size: ${({ theme }) => theme.size.text.main}px;
 	font-weight: bold;
 `;
 
 export const Content = styled.Text`
-	margin-top: 16px;
-	margin-bottom: 16px;
+	margin-top: ${({ theme }) => theme.size.text.main}px;
+	margin-bottom: ${({ theme }) => theme.size.text.main}px;
 	font-size: ${({ theme }) => theme.size.text.main}px;
 	line-height: ${({ theme }) => theme.size.text.main * 1.35}px;
 	color: ${({ theme }) => theme.colors.text.main};
@@ -39,15 +31,16 @@ export const Content = styled.Text`
 
 export const Likes = styled.Pressable`
 	flex-direction: row;
+	justify-content: center;
 	gap: 8px;
 `;
 
 export const LikesNum = styled.Text`
 	color: ${({ theme }) => theme.colors.primary.main};
-	font-size: ${({ theme }) => theme.size.text.main}px;
+	font-size: ${({ theme }) => theme.size.text.smaller}px;
 `;
 
 export const Time = styled.Text`
-	font-size: ${({ theme }) => theme.size.text.small}px;
+	font-size: ${({ theme }) => theme.size.text.smaller}px;
 	color: ${({ theme }) => theme.colors.text.light};
 `;

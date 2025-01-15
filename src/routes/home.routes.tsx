@@ -7,7 +7,7 @@ import PostsUser from '../pages/PostsUser';
 export type HomeStackParams = {
 	Home: undefined;
 	Post: undefined;
-	PostsUser: undefined;
+	PostsUser: { userId: string };
 }
 
 const Stack = createNativeStackNavigator<HomeStackParams>();
@@ -43,7 +43,7 @@ export default function HomeRoutes() {
 				name='PostsUser'
 				component={PostsUser}
 				options={{
-					title: 'Novo Post',
+					headerShown: false
 				}}
 			/>
 		</Stack.Navigator>

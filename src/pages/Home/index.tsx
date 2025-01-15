@@ -1,52 +1,86 @@
-import { ActivityIndicator } from 'react-native';
+import { ActivityIndicator, Alert } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { useCallback, useState } from 'react';
+import firestore from '@react-native-firebase/firestore';
 
 import { Header, Page } from '../../components/layout';
-import { Empty, Footer, PostList, Separator } from './styles';
-import { fetchPosts, handleRefreshPosts } from './controllers';
+import {
+	fetchPosts,
+	getListPosts,
+	handleRefreshPosts
+} from './controllers';
 import { useAuthContext } from '../../contexts/authContext';
 import { useThemeContext } from '../../contexts/themeContext';
 import FloatingBtn from '../../components/FloatingBtn';
-import Post from './components/Post';
+import { IPost } from '../../types';
+import PostList from '../../components/PostList';
 
 export default function Home() {
-	const { user, like } = useAuthContext();
+	const { signedUser, like } = useAuthContext();
 
-	const [posts, setPosts] = useState([]);
+	const [posts, setPosts] = useState<IPost[]>([]);
+	const [loading, setLoading] = useState(true);
 	const [loadingRefresh, setLoadingRefresh] = useState(false);
 	const [lastItem, setLastItem] = useState<any>(undefined);
 	const [emptyList, setEmptyList] = useState(false);
 
-	const { theme } = useThemeContext();
-
-	function onLike(postId: string) {
+	async function onLike(postId: string) {
 		like(postId);
+		const isLiked = signedUser?.likes.includes(postId);
+		const currentPost = posts.find(post => post.uid === postId);
+		let numLikes = currentPost?.likes || 0;
 
-		if (user?.likes.includes(postId)) {
-			setPosts(
-				posts.map(post =>
-					post.id === postId
-						? { ...post, likes: post.likes - 1 }
-						: post
-				)
-			);
+		if (isLiked) {
+			numLikes = numLikes === 0 ? 0 : numLikes - 1;
+
+			try {
+				await firestore()
+				.collection('posts')
+				.doc(postId)
+				.update({
+					likes: numLikes,
+				});
+
+				setPosts(
+					posts.map(post =>
+						post.uid === postId
+							? { ...post, likes: numLikes }
+							: post
+					)
+				);
+			} catch (error) {
+				Alert.alert('Erro', 'Não foi possível descurtir o post.');
+			}
 		} else {
-			setPosts(
-				posts.map(post =>
-					post.id === postId
-						? { ...post, likes: post.likes + 1 }
-						: post
-				)
-			);
+			numLikes += 1;
+
+			try {
+				await firestore()
+				.collection('posts')
+				.doc(postId)
+				.update({
+					likes: numLikes,
+				});
+
+				setPosts(
+					posts.map(post =>
+						post.uid === postId
+							? { ...post, likes: numLikes }
+							: post
+					)
+				);
+			} catch (error) {
+				Alert.alert('Erro', 'Não foi possível curtir o post.');
+			}
+
 		}
 	}
 
 	useFocusEffect(
 		useCallback(() => {
 			let isActive = true;
-
 			fetchPosts(isActive, setPosts, setEmptyList, setLastItem);
+			setLoading(false);
 
 			return () => {
 				isActive = false;
@@ -59,27 +93,10 @@ export default function Home() {
 			<Header />
 
 			<PostList
-				data={posts}
-				renderItem={({ item }) => (
-					<Post
-						//@ts-ignore
-						post={item}
-						userLikes={user.likes || []}
-						onLike={onLike}
-					/>
-				)}
-				//@ts-ignore
-				keyExtractor={item => item.uid}
-				ItemSeparatorComponent={() => <Separator />}
-				ListFooterComponent={<Footer />}
-				ListEmptyComponent={() => (
-					<Empty>
-						<ActivityIndicator
-							color={theme.colors.primary.main}
-							size={48}
-						/>
-					</Empty>
-				)}
+				posts={posts}
+				userLikes={signedUser?.likes || []}
+				onLike={onLike}
+				isEmptyList={emptyList}
 				refreshing={loadingRefresh}
 				onRefresh={async () => {
 					handleRefreshPosts(
@@ -89,6 +106,18 @@ export default function Home() {
 						setLoadingRefresh
 					);
 				}}
+				onEndReached={() =>
+					getListPosts(
+						emptyList,
+						setLoading,
+						loading,
+						setEmptyList,
+						lastItem,
+						setLastItem,
+						setPosts
+					)
+				}
+				onEndReachedThreshold={0.15}
 			/>
 
 			<FloatingBtn />

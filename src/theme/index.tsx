@@ -23,6 +23,8 @@ const theme: ITheme = {
 		},
 		background: {
 			main: '#353840',
+			dark: '#323238',
+			darker: '#222227',
 			light: '#eee',
 			lighter: 'white',
 		},

@@ -9,7 +9,7 @@ import { useAuthContext } from '../../contexts/authContext';
 import Button from '../../components/Button';
 
 export default function Profile() {
-	const { user, signOut } = useAuthContext();
+	const { signedUser, signOut } = useAuthContext();
 
 	return (
 		<Container>
@@ -18,8 +18,8 @@ export default function Profile() {
 				resizeMethod='scale'
 			/>
 			<User>
-				<UserName>{user.name}</UserName>
-				<UserEmail>{user.email}</UserEmail>
+				<UserName>{signedUser.name}</UserName>
+				<UserEmail>{signedUser.email}</UserEmail>
 			</User>
 
 			<Button text='Atualizar perfil' />

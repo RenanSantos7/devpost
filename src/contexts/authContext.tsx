@@ -16,7 +16,7 @@ import { IUser } from '../types';
 import isEmptyObj from '../utils/isEmptyObj';
 
 interface IAuthContext {
-	user: IUser;
+	signedUser: IUser;
 	error: Error;
 	isSignedIn: boolean;
 	signUp: (name: string, email: string, password: string) => void;
@@ -30,7 +30,7 @@ interface IAuthContext {
 const AuthContext = createContext<IAuthContext>(undefined);
 
 export default function AuthProvider({ children }: { children: ReactNode }) {
-	const [user, setUser] = useState<IUser>(null);
+	const [signedUser, setSignedUser] = useState<IUser>(null);
 	const [error, setError] = useState<Error>(null);
 	const [loading, setLoading] = useState(false);
 
@@ -47,14 +47,14 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
 						name,
 						email,
 						createdAt: new Date(),
-						likes: []
+						likes: [],
 					})
 					.then(() => {
-						setUser({
+						setSignedUser({
 							uid,
 							name,
 							email,
-							likes: []
+							likes: [],
 						});
 					});
 			})
@@ -76,7 +76,7 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
 					.collection('users')
 					.doc(id)
 					.get();
-				setUser({
+				setSignedUser({
 					uid: id,
 					name: userProfile.data().name,
 					email: userProfile.data().email,
@@ -100,7 +100,7 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
 			.finally(() => {
 				setLoading(false);
 			});
-		setUser(null);
+		setSignedUser(null);
 	}
 
 	async function saveUserOnAsyncStorage(data: IUser) {
@@ -115,48 +115,55 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
 		setLoading(true);
 		const storagedUser = await AsyncStorage.getItem('user');
 		if (storagedUser) {
-			setUser(JSON.parse(storagedUser));
+			setSignedUser(JSON.parse(storagedUser));
 		}
 		setLoading(false);
 	}
 
-	function like(postId: string) {
-		const isLiked = user.likes.includes(postId);
-		const { likes } = user;
+	async function like(postId: string) {
+		const isLiked = signedUser.likes.includes(postId);
+		const { likes } = signedUser;
+		let likeList: string[] = [];
 
 		if (isLiked) {
-			setUser(prev => ({
-				...prev,
-				likes: likes.filter(lk => lk !== postId)
-			}))
+			likeList = likes.filter(lk => lk !== postId);
 		} else {
-			setUser(prev => ({
+			likeList = [...likes, postId];
+		}
+
+		try {
+			await firestore().collection('users').doc(signedUser.uid).update({
+				likes: likeList,
+			});
+			setSignedUser(prev => ({
 				...prev,
-				likes: [...likes, postId]
-			}))
+				likes: likeList,
+			}));
+		} catch (error) {
+			Alert.alert('Erro', 'Não foi possível curtir o post');
 		}
 	}
 
 	useEffect(() => {
 		loadUserFromAsyncStorage();
 	}, []);
-	
+
 	useEffect(() => {
-		saveUserOnAsyncStorage(user);
-	}, [user]);
+		saveUserOnAsyncStorage(signedUser);
+	}, [signedUser]);
 
 	return (
 		<AuthContext.Provider
 			value={{
-				user,
+				signedUser,
 				error,
-				isSignedIn: !!user,
+				isSignedIn: !!signedUser,
 				signUp,
 				signIn,
 				signOut,
 				loading,
 				setLoading,
-				like
+				like,
 			}}
 		>
 			{children}

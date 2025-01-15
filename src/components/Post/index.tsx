@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 import MaterialComIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import {
@@ -9,12 +10,13 @@ import {
 	Likes,
 	LikesNum,
 	Time,
-	UserPhoto,
-} from './styles';
-import { FlexLine } from '../../../../components/layout';
-import { IPost } from '../../../../types/index.ts';
-import { useThemeContext } from '../../../../contexts/themeContext';
-import relativeDate from '../../../../utils/relativeDate.ts';
+} from './styles.tsx';
+import { FlexLine } from '../layout/index.ts';
+import { HomeStackParams } from '../../routes/home.routes.tsx';
+import { IPost } from '../../types/index.ts';
+import { useThemeContext } from '../../contexts/themeContext.tsx';
+import UserPhoto from '../UserPhoto/index.tsx';
+import relativeDate from '../../utils/relativeDate.ts';
 
 interface PostProps {
 	post: IPost;
@@ -26,13 +28,7 @@ export default function Post({ post, userLikes, onLike }: PostProps) {
 	const [likes, setLikes] = useState(post.likes);
 
 	const { theme } = useThemeContext();
-
-	const photo = useMemo(() => {
-		const { avatarUrl } = post;
-		return avatarUrl
-			? { uri: avatarUrl }
-			: require('../../../../assets/avatar.png');
-	}, [post]);
+	const navigation = useNavigation<NavigationProp<HomeStackParams>>();
 
 	const time = useMemo(() => {
 		const { created } = post;
@@ -55,8 +51,10 @@ export default function Post({ post, userLikes, onLike }: PostProps) {
 
 	return (
 		<Container style={{ elevation: 3 }}>
-			<Header>
-				<UserPhoto source={photo} resizeMode='cover' />
+			<Header
+				onPress={() => navigation.navigate('PostsUser', { userId: post.userId })}
+			>
+				<UserPhoto photo={post.avatarUrl} />
 				<Author>{post.author}</Author>
 			</Header>
 

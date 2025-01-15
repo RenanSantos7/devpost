@@ -6,6 +6,7 @@ export interface IUser {
 	email: string;
 	createdAt?: Date;
 	likes?: string[]
+	photoUrl?: string;
 }
 
 export interface IPost {
@@ -21,6 +22,7 @@ export interface IPost {
 interface IColor {
 	main: ColorValue;
 	dark?: ColorValue;
+	darker?: ColorValue;
 	light?: ColorValue;
 	lighter?: ColorValue;
 }
