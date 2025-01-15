@@ -35,7 +35,7 @@ export function fetchPosts(
 					});
 				});
 				setEmptyList(!!snapshot.empty);
-				setPosts(postList);
+				setPosts(postList.reverse());
 				setLastItem(docs[docs.length - 1]);
 			}
 		});
@@ -75,7 +75,7 @@ export async function handleRefreshPosts(
 			});
 
 			setEmptyList(false);
-			setPosts(postList);
+			setPosts(postList.reverse());
 			setLastItem(docs[docs.length - 1]);
 		});
 

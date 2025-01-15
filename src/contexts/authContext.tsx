@@ -48,6 +48,7 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
 						email,
 						createdAt: new Date(),
 						likes: [],
+						photoUrl: '',
 					})
 					.then(() => {
 						setSignedUser({
@@ -55,6 +56,7 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
 							name,
 							email,
 							likes: [],
+							photoUrl: '',
 						});
 					});
 			})

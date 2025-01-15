@@ -14,7 +14,7 @@ export default function NewPost() {
 	const [post, setPost] = useState('');
 
 	const { theme } = useThemeContext();
-	const { loggedUser: user, setLoading } = useAuthContext();
+	const { signedUser, setLoading } = useAuthContext();
 
 	const navigation = useNavigation();
 
@@ -27,7 +27,7 @@ export default function NewPost() {
 		try {
 			let response = await storage()
 				.ref('users')
-				.child(user?.uid)
+				.child(signedUser?.uid)
 				.getDownloadURL();
 			avatar = response;
 		} catch (error) {
@@ -39,9 +39,9 @@ export default function NewPost() {
 			.add({
 				created: new Date(),
 				content: post,
-				author: user?.name,
+				author: signedUser?.name,
 				avatarUrl: avatar,
-				userId: user?.uid,
+				userId: signedUser?.uid,
 				likes: 0,
 			})
 			.then(() => {

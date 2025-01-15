@@ -36,7 +36,7 @@ export const OnlyTxtBtn = styled.TouchableOpacity<ButtonProps>`
 `;
 
 export const OnlyTxtBtnTxt = styled.Text<ButtonProps>`
-	color: ${({ theme }) => theme.colors.text.main};
+	color: ${({ theme }) => theme.colors.text.light};
 	font-weight: bold;
 	font-style: italic;
 	text-align: center;
