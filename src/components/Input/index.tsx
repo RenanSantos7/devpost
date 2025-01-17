@@ -14,14 +14,6 @@ export default function Input({ secret = false, ...props }: InputProps) {
 
 	return (
 		<Container>
-			{/*  
-			{props.icon && (
-                <FontAwesomeIcon
-                    name={props.icon}
-                    
-                />
-            )}
-			*/}
 			<StyledInput
 				placeholder={props.placeholder}
 				placeholderTextColor='#A09D9D'

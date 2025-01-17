@@ -25,6 +25,7 @@ interface IAuthContext {
 	loading: boolean;
 	setLoading: Dispatch<SetStateAction<boolean>>;
 	like: (postId: string) => void;
+	changeUserName: (newName: string) => Promise<void>;
 }
 
 const AuthContext = createContext<IAuthContext>(undefined);
@@ -146,6 +147,26 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
 		}
 	}
 
+	async function changeUserName(newName: string) {
+		setLoading(true);
+
+		await firestore()
+			.collection('users')
+			.doc(signedUser.uid)
+			.update({ name: newName })
+			.then(() => {
+				setSignedUser(prev => ({ ...prev, name: newName }));
+			})
+			.catch(error => {
+				Alert.alert(
+					'Erro',
+					'Não foi possível alterar o nome do usuário'
+				);
+				console.error('Erro ao alterar nome do usuário:', error);
+			})
+			.finally(() => setLoading(false));
+	}
+
 	useEffect(() => {
 		loadUserFromAsyncStorage();
 	}, []);
@@ -166,6 +187,7 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
 				loading,
 				setLoading,
 				like,
+				changeUserName
 			}}
 		>
 			{children}

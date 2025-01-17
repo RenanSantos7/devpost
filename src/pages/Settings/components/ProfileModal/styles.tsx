@@ -23,7 +23,7 @@ export const BackButton = styled.Pressable`
 `;
 
 export const BackButtonTxt = styled.Text`
-	font-size: ${({ theme }) => theme.size.text.main};
+	font-size: ${({ theme }) => theme.size.text.main}px;
 `;
 
 export const Content = styled.View`

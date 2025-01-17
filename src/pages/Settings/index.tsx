@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react';
-import MaterialComIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { Alert, Modal, View } from 'react-native';
+import { useState } from 'react';
+import firestore from '@react-native-firebase/firestore';
 
 import {
 	ButtonContainer,
@@ -14,12 +15,11 @@ import {
 import { useAuthContext } from '../../contexts/authContext';
 import Button from '../../components/Button';
 import UserPhoto from '../../components/UserPhoto';
-import { Alert, Image, Modal, View } from 'react-native';
 import Logo from '../../components/Logo';
 import ProfileModal from './components/ProfileModal';
 
 export default function Settings() {
-	const { signedUser, signOut } = useAuthContext();
+	const { signedUser, changeUserName, signOut } = useAuthContext();
 
 	const [modalOpen, setModalOpen] = useState(false);
 
@@ -27,12 +27,28 @@ export default function Settings() {
 		Alert.alert('Usuário', 'Mudando foto do perfil');
 	}
 
-	async function changeUserName(newName: string) {
+	async function changeName(newName: string) {
+		// mudar nome do usuário
+		await changeUserName(newName);
 
+		// mudar nome do usuário nos posts
+		const postDocs = await firestore()
+			.collection('posts')
+			.where('userId', '==', signedUser.uid)
+			.get();
+
+		postDocs.forEach(async doc => {
+			await firestore()
+				.collection('posts')
+				.doc(doc.id)
+				.update({ author: newName });
+		});
+
+		setModalOpen(false);
 	}
 
 	function closeModal() {
-		setModalOpen(false)
+		setModalOpen(false);
 	}
 
 	return (
@@ -51,7 +67,10 @@ export default function Settings() {
 				</User>
 
 				<ButtonContainer>
-					<Button text='Atualizar perfil' onPress={() => setModalOpen(true)} />
+					<Button
+						text='Atualizar perfil'
+						onPress={() => setModalOpen(true)}
+					/>
 
 					<Button text='Sair' variant='secondary' onPress={signOut} />
 				</ButtonContainer>
@@ -67,9 +86,9 @@ export default function Settings() {
 				<ProfileModal
 					close={closeModal}
 					userName={signedUser.name}
+					saveName={changeName}
 				/>
 			</Modal>
 		</Container>
 	);
 }
-<p></p>;
