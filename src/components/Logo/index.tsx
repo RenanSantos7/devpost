@@ -1,11 +1,14 @@
+import { ViewStyle } from 'react-native';
 import styled from 'styled-components/native';
 
 interface LogoProps {
     size: number;
+    style?: ViewStyle;
 };
 
 interface StyledImageProps {
     $size: number;
+    style?: ViewStyle;
 }
 
 const StyledImage = styled.Image<StyledImageProps>`
@@ -18,6 +21,7 @@ export default function Logo(props: LogoProps) {
         <StyledImage
             source={require('../../assets/logo.png')}
             $size={props.size}
+            style={props.style}
         />
     );
 };

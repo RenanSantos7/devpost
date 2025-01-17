@@ -2,12 +2,12 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import Home from '../pages/Home';
 import NewPost from '../pages/NewPost';
-import PostsUser from '../pages/PostsUser';
+import Profile from '../pages/PostsUser';
 
 export type HomeStackParams = {
 	Home: undefined;
 	Post: undefined;
-	PostsUser: { userId: string };
+	Profile: { userId: string };
 }
 
 const Stack = createNativeStackNavigator<HomeStackParams>();
@@ -40,8 +40,8 @@ export default function HomeRoutes() {
 			/>
 
 			<Stack.Screen
-				name='PostsUser'
-				component={PostsUser}
+				name='Profile'
+				component={Profile}
 				options={{
 					headerShown: false
 				}}

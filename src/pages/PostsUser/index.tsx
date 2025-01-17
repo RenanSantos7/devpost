@@ -17,8 +17,8 @@ import PostList from '../../components/PostList';
 import Header from './components/Header';
 import BackBtn from '../../components/BackBtn';
 
-export default function PostsUser() {
-	const route = useRoute<RouteProp<HomeStackParams, 'PostsUser'>>();
+export default function Profile() {
+	const route = useRoute<RouteProp<HomeStackParams, 'Profile'>>();
 	const navigation = useNavigation<NavigationProp<HomeStackParams>>();
 	const { like } = useAuthContext();
 

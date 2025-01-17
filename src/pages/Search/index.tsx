@@ -83,7 +83,7 @@ export default function Search() {
 				renderItem={({ item }) => (
 					<Result
 						onPress={() => {
-							navigation.navigate('PostsUser', {
+							navigation.navigate('Profile', {
 								userId: item.uid,
 							});
 						}}

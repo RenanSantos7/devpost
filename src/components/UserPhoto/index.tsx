@@ -8,8 +8,8 @@ interface UserPhotoProps extends ImageProps {
 }
 
 interface PhotoProps { 
-	$width?: number;
-	$height?: number;
+	$width: number;
+	$height: number;
 };
 
 const Photo = styled.Image<PhotoProps>`
@@ -25,7 +25,7 @@ export default function UserPhoto(props: UserPhotoProps) {
 		return props.photo
 			? { uri: props.photo }
 			: require('../../assets/avatar.png');
-	}, []);
+	}, [props.photo]);
 
 	return (
 		<Photo

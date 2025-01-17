@@ -52,7 +52,7 @@ export default function Post({ post, userLikes, onLike }: PostProps) {
 	return (
 		<Container style={{ elevation: 3 }}>
 			<Header
-				onPress={() => navigation.navigate('PostsUser', { userId: post.userId })}
+				onPress={() => navigation.navigate('Profile', { userId: post.userId })}
 			>
 				<UserPhoto photo={post.avatarUrl} />
 				<Author>{post.author}</Author>

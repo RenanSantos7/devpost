@@ -1,11 +1,17 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 
-import Profile from '../pages/Profile';
+import Settings from '../pages/Settings';
 import Search from '../pages/Search';
 import HomeRoutes from './home.routes';
 
-const Tabs = createBottomTabNavigator();
+export type AppRouteParams = {
+	HomeTab: undefined;
+	Pesquisar: undefined;
+	Settings: undefined;
+}
+
+const Tabs = createBottomTabNavigator<AppRouteParams>();
 
 export default function AppRoutes() {
 	return (
@@ -50,14 +56,14 @@ export default function AppRoutes() {
             />
 
             <Tabs.Screen
-                name='Perfil'
-                component={Profile}
+                name='Settings'
+                component={Settings}
                 options={{
 					tabBarIcon: ({ color, size }) => (
                         <FeatherIcon
                             color={color}
                             size={size}
-                            name='user'
+                            name='sliders'
                         />
 					),
 				}}

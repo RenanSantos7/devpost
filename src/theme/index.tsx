@@ -16,6 +16,7 @@ const theme: ITheme = {
 	colors: {
 		primary: {
 			main: '#cc0000',
+			light: 'hsl(0, 100%, 75%)',
 		},
 		secondary: {
 			main: 'hsl(216, 97%, 62%)',
