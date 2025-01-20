@@ -1,9 +1,8 @@
-import { Platform, Text, View } from 'react-native';
-import { useMemo, useState } from 'react';
+import { Platform } from 'react-native';
+import { useState } from 'react';
 import MaterialComIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { BackButton, BackButtonTxt, Container, Content } from './styles';
-import { useThemeContext } from '../../../../contexts/themeContext';
 import Input from '../../../../components/Input';
 import Button from '../../../../components/Button';
 
@@ -14,17 +13,14 @@ interface ProfileModalProps {
 }
 
 export default function ProfileModal(props: ProfileModalProps) {
-	const { theme } = useThemeContext();
-
 	const [name, setName] = useState(props.userName);
 	
 	return (
 		<Container behavior={Platform.OS === 'android' ? undefined : 'padding'}>
 			<BackButton onPress={() => props.close()}>
-				//@ts-ignore
 				<MaterialComIcons
 					name='arrow-left'
-					size={theme.size.text.main}
+					size={16}
 				/>
 				<BackButtonTxt>Voltar</BackButtonTxt>
 			</BackButton>

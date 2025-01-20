@@ -1,6 +1,8 @@
-import { Alert, Modal, View } from 'react-native';
+import { Modal, View } from 'react-native';
+import { ImageLibraryOptions, ImagePickerResponse, launchImageLibrary } from 'react-native-image-picker';
 import { useState } from 'react';
 import firestore from '@react-native-firebase/firestore';
+import firebaseStorage from '@react-native-firebase/storage'
 
 import {
 	ButtonContainer,
@@ -23,8 +25,28 @@ export default function Settings() {
 
 	const [modalOpen, setModalOpen] = useState(false);
 
-	function changeUserPhoto() {
-		Alert.alert('Usuário', 'Mudando foto do perfil');
+	function changePhoto() {
+		const options: ImageLibraryOptions = {
+			mediaType: 'photo',
+			includeExtra: false,
+		}
+
+		launchImageLibrary(options, response => {
+			if (response.didCancel) {
+				console.log('Solicitação de acesso à biblioteca de imagens cancelada pelo usuário.')
+			} else if (response.errorMessage) {
+				console.log(`Erro ao acessar biblioteca de imagens:\n[${response.errorCode}]: ${response.errorMessage}`)
+			} else {
+				uploadFile(response)
+			}
+		})
+	}
+
+	async function uploadFile(response: ImagePickerResponse) {
+		const fileSource = response.assets[0].uri;
+		const storageRef = firebaseStorage().ref('users').child(signedUser.uid);
+
+		return await storageRef.putFile(fileSource);
 	}
 
 	async function changeName(newName: string) {
@@ -56,7 +78,7 @@ export default function Settings() {
 			<Logo size={32} style={{ marginTop: 12 }} />
 
 			<Content>
-				<UploadBtn onPressOut={changeUserPhoto}>
+				<UploadBtn onPressOut={changePhoto}>
 					<UserPhoto photo={signedUser.photoUrl} size={165} />
 					<UploadBtnIcon name='plus-circle' size={36} />
 				</UploadBtn>

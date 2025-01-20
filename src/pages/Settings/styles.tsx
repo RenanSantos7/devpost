@@ -8,10 +8,6 @@ export const Container = styled.SafeAreaView`
 	padding-right: ${({ theme }) => theme.size.spacing.main}px;
 	justify-content: space-between;
 	align-items: center;
-
-	* {
-		flex: 1;
-	}
 `;
 
 export const Content = styled.View`

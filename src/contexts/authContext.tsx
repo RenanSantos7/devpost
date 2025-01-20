@@ -167,6 +167,10 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
 			.finally(() => setLoading(false));
 	}
 
+	async function changeUserPhoto() {
+		
+	}
+
 	useEffect(() => {
 		loadUserFromAsyncStorage();
 	}, []);
