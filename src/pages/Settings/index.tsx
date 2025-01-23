@@ -4,7 +4,7 @@ import {
 	ImagePickerResponse,
 	launchImageLibrary,
 } from 'react-native-image-picker';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
 
@@ -33,6 +33,7 @@ export default function Settings() {
 		const options: ImageLibraryOptions = {
 			mediaType: 'photo',
 			includeExtra: false,
+			selectionLimit: 1,
 		};
 
 		launchImageLibrary(options, async response => {
@@ -54,7 +55,7 @@ export default function Settings() {
 		const fileSource = response.assets[0].uri;
 		console.log('File source:', fileSource);
 		
-		const storageRef = storage().ref('users').child(signedUser?.uid);
+		const storageRef = storage().ref(`users/${signedUser.uid}/photo.jpg`);
 
 		return await storageRef
 			.putFile(fileSource)

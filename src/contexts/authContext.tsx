@@ -84,6 +84,7 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
 					name: userProfile.data().name,
 					email: userProfile.data().email,
 					likes: userProfile.data().likes,
+					photoUrl: userProfile.data().photoUrl,
 				});
 				setError(null);
 			})
