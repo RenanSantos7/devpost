@@ -1,8 +1,12 @@
 import { Modal, View } from 'react-native';
-import { ImageLibraryOptions, ImagePickerResponse, launchImageLibrary } from 'react-native-image-picker';
+import {
+	ImageLibraryOptions,
+	ImagePickerResponse,
+	launchImageLibrary,
+} from 'react-native-image-picker';
 import { useState } from 'react';
 import firestore from '@react-native-firebase/firestore';
-import firebaseStorage from '@react-native-firebase/storage'
+import storage from '@react-native-firebase/storage';
 
 import {
 	ButtonContainer,
@@ -25,28 +29,41 @@ export default function Settings() {
 
 	const [modalOpen, setModalOpen] = useState(false);
 
-	function changePhoto() {
+	async function changePhoto() {
 		const options: ImageLibraryOptions = {
 			mediaType: 'photo',
 			includeExtra: false,
-		}
+		};
 
-		launchImageLibrary(options, response => {
+		launchImageLibrary(options, async response => {
 			if (response.didCancel) {
-				console.log('Solicitação de acesso à biblioteca de imagens cancelada pelo usuário.')
+				console.log(
+					'Solicitação de acesso à biblioteca de imagens cancelada pelo usuário.'
+				);
 			} else if (response.errorMessage) {
-				console.log(`Erro ao acessar biblioteca de imagens:\n[${response.errorCode}]: ${response.errorMessage}`)
+				console.log(
+					`Erro ao acessar biblioteca de imagens:\n[${response.errorCode}]: ${response.errorMessage}`
+				);
 			} else {
-				uploadFile(response)
+				await uploadFile(response);
 			}
-		})
+		});
 	}
 
 	async function uploadFile(response: ImagePickerResponse) {
 		const fileSource = response.assets[0].uri;
-		const storageRef = firebaseStorage().ref('users').child(signedUser.uid);
+		console.log('File source:', fileSource);
+		
+		const storageRef = storage().ref('users').child(signedUser?.uid);
 
-		return await storageRef.putFile(fileSource);
+		return await storageRef
+			.putFile(fileSource)
+			.then(() => {
+				console.log('Arquivo enviado com sucesso!');
+			})
+			.catch(error => {
+				console.error('Erro ao enviar arquivo:', error);
+			});
 	}
 
 	async function changeName(newName: string) {
@@ -76,35 +93,28 @@ export default function Settings() {
 	return (
 		<Container>
 			<Logo size={32} style={{ marginTop: 12 }} />
+			<UploadBtn onPressOut={changePhoto}>
+				<UserPhoto photo={signedUser.photoUrl} size={165} />
+				<UploadBtnIcon name='plus-circle' size={36} />
+			</UploadBtn>
 
-			<Content>
-				<UploadBtn onPressOut={changePhoto}>
-					<UserPhoto photo={signedUser.photoUrl} size={165} />
-					<UploadBtnIcon name='plus-circle' size={36} />
-				</UploadBtn>
+			<User>
+				<UserName>{signedUser.name}</UserName>
+				<UserEmail>{signedUser.email}</UserEmail>
+			</User>
 
-				<User>
-					<UserName>{signedUser.name}</UserName>
-					<UserEmail>{signedUser.email}</UserEmail>
-				</User>
+			<ButtonContainer>
+				<Button
+					text='Atualizar perfil'
+					onPress={() => setModalOpen(true)}
+				/>
 
-				<ButtonContainer>
-					<Button
-						text='Atualizar perfil'
-						onPress={() => setModalOpen(true)}
-					/>
-
-					<Button text='Sair' variant='secondary' onPress={signOut} />
-				</ButtonContainer>
-			</Content>
+				<Button text='Sair' variant='secondary' onPress={signOut} />
+			</ButtonContainer>
 
 			<View />
 
-			<Modal
-				visible={modalOpen}
-				animationType='slide'
-				transparent
-			>
+			<Modal visible={modalOpen} animationType='slide' transparent>
 				<ProfileModal
 					close={closeModal}
 					userName={signedUser.name}

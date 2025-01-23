@@ -12,7 +12,7 @@ export default function Login() {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [errorMsg, setErrorMsg] = useState('');
-	
+
 	const { error, signIn, signUp } = useAuthContext();
 
 	function clear() {
@@ -45,7 +45,7 @@ export default function Login() {
 
 	return (
 		<Container>
-			<View style={{marginBottom: 28}}>
+			<View style={{ marginBottom: 28 }}>
 				<Logo size={64} />
 			</View>
 
@@ -72,10 +72,8 @@ export default function Login() {
 
 							if (!password) console.error('Verifique a senha');
 
-							if (email && password) {
-								await signIn(email, password);
-								clear();
-							}
+							await signIn(email, password);
+							clear();
 						}}
 					/>
 
