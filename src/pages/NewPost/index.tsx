@@ -23,24 +23,14 @@ export default function NewPost() {
 
 	async function handlePost() {
 		setLoading(true)
-		let avatar = null;
-		try {
-			let response = await storage()
-				.ref('users')
-				.child(signedUser?.uid)
-				.getDownloadURL();
-			avatar = response;
-		} catch (error) {
-			avatar = null;
-		}
-
+		
 		await firestore()
 			.collection('posts')
 			.add({
 				created: new Date(),
 				content: post,
 				author: signedUser?.name,
-				avatarUrl: avatar,
+				avatarUrl: signedUser.photoUrl,
 				userId: signedUser?.uid,
 				likes: 0,
 			})

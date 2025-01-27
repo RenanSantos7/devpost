@@ -54,10 +54,10 @@ export default function Settings() {
 	async function uploadFile(response: ImagePickerResponse) {
 		const fileSource = response.assets[0].uri;
 		console.log('File source:', fileSource);
-		
-		const storageRef = storage().ref(`users/${signedUser.uid}/photo.jpg`);
 
-		return await storageRef
+		const storageRef = storage().ref('users').child(signedUser.uid);
+
+		await storageRef
 			.putFile(fileSource)
 			.then(() => {
 				console.log('Arquivo enviado com sucesso!');

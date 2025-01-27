@@ -23,7 +23,7 @@ type PostSizeProps = {
 
 export const PostSize = styled.View`
 	justify-content: flex-end;
-  align-items: center;
+	align-items: center;
 	flex-direction: row;
 	border: 1px solid transparent;
 	gap: 8px;
@@ -31,5 +31,5 @@ export const PostSize = styled.View`
 
 export const PostSizeTxt = styled.Text<PostSizeProps>`
 	color: ${props => (props.danger ? props.theme.colors.error : '#e9e9e9')};
-  font-size: ${({ theme }) => theme.size.text.small}px;
+	font-size: ${({ theme }) => theme.size.text.small}px;
 `;
