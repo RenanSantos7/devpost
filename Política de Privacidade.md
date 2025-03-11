@@ -1,9 +1,3 @@
----
-tags: 
-criação: 2025-03-11
-links: 
-obsidianUIMode: 
----
 ## Política Privacidade
 
 Ao utilizar o `NOME_DO_APP` você concorda com esta política de privacidade e nos autoriza a processar os dados que vier a fornecer.
