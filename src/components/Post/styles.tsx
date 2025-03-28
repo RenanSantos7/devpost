@@ -1,4 +1,5 @@
 import styled from 'styled-components/native';
+import  Text from '../layout/Text';
 
 export const Container = styled.View`
 	background-color: ${({ theme }) => theme.colors.background.lighter};
@@ -16,12 +17,13 @@ export const Header = styled.Pressable`
 	gap: 12px;
 `;
 
-export const Author = styled.Text`
+export const Author = styled(Text).attrs({
+	bold: true,
+})`
 	font-size: ${({ theme }) => theme.size.text.main}px;
-	font-weight: bold;
 `;
 
-export const Content = styled.Text`
+export const Content = styled(Text)`
 	margin-top: ${({ theme }) => theme.size.text.main}px;
 	margin-bottom: ${({ theme }) => theme.size.text.main}px;
 	font-size: ${({ theme }) => theme.size.text.main}px;
@@ -35,7 +37,7 @@ export const Likes = styled.Pressable`
 	gap: 8px;
 `;
 
-export const LikesNum = styled.Text`
+export const LikesNum = styled(Text)`
 	color: ${({ theme }) => theme.colors.primary.main};
 	font-size: ${({ theme }) => theme.size.text.smaller}px;
 `;
